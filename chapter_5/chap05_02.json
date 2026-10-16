@@ -1,0 +1,19 @@
+{ 
+  "node_type_id": { 
+    "type": "allowlist", 
+    "values": ["m5d.large", "m5d.xlarge", "m5d.2xlarge"], 
+    "defaultValue": "m5d.large" 
+  }, 
+  "num_workers": { "type": "forbidden" }, 
+  "autoscale.min_workers": { "type": "range", "minValue": 1, "maxValue": 2, "defaultValue": 1 }, 
+  "autoscale.max_workers": { "type": "range", "maxValue": 8, "defaultValue": 4 }, 
+  "dbus_per_hour": { "type": "range", "maxValue": 20 }, 
+  "autotermination_minutes": { "type": "fixed", "value": 30 }, 
+  "data_security_mode": { 
+    "type": "allowlist", 
+    "values": ["USER_ISOLATION", "SINGLE_USER"], 
+    "defaultValue": "USER_ISOLATION" 
+  }, 
+  "custom_tags.domain": { "type": "fixed", "value": "finance" }, 
+  "custom_tags.cost_center": { "type": "fixed", "value": "fin-analytics"} 
+} 
