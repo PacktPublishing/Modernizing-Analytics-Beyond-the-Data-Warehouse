@@ -1,0 +1,37 @@
+bundle: 
+  name: sales-order-summary   
+
+variables: 
+  catalog: {default: sales} 
+  
+resources: 
+  pipelines: 
+    order_summary_pipeline: 
+      name: order_summary-${bundle.target} 
+      catalog: ${var.catalog} 
+      schema: orders 
+      serverless: true       
+      libraries: 
+        - file: {path: ./src/order_summary.py} 
+  jobs: 
+    order_summary_release:   
+      name: order_summary-release-${bundle.target} 
+      tasks: 
+        - task_key: contract_test
+          environment_key: default 
+          spark_python_task: {python_file: ./tests/check_contract.py} 
+        - task_key: run_pipeline
+            depends_on: [{task_key: contract_test}] 
+            pipeline_task: 
+              pipeline_id: ${resources.pipelines.order_summary_pipeline.id} 
+      environments: 
+        - environment_key: default 
+          spec: {environment_version: "6"} 
+  
+targets: 
+  dev: {mode: development, default: true} 
+  prod: 
+    mode: production 
+    git: {branch: main}  
+    run_as: 
+      service_principal_name: "<sales-release-sp-application-id>" 
