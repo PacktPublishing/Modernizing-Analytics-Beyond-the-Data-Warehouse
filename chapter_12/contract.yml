@@ -1,0 +1,8 @@
+# contract.yaml: the product's promise, read by the release gate. 
+version: 1.3.0     # semantic version consumers rely on 
+schema:            # every field the product promises, with its type 
+  - {name: order_id,     type: bigint} 
+  - {name: order_date,   type: date} 
+  - {name: customer_id,  type: bigint} 
+  - {name: total_amount, type: "decimal(10,2)"} 
+# major_bump_approved: true    # uncomment only when a breaking change ships as a new major version 
